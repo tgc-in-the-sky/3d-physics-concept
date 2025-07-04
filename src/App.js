@@ -3,7 +3,6 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Environment, useTexture } from "@react-three/drei"
 import { Physics, useSphere } from "@react-three/cannon"
 import { EffectComposer, N8AO, SMAA, Bloom } from "@react-three/postprocessing"
-import { useControls } from "leva"
 
 const rfs = THREE.MathUtils.randFloatSpread
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32)
