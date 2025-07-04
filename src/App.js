@@ -3,28 +3,53 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Environment, useTexture } from "@react-three/drei"
 import { Physics, useSphere } from "@react-three/cannon"
 import { EffectComposer, N8AO, SMAA, Bloom } from "@react-three/postprocessing"
+import { Suspense, useEffect, useState } from 'react'
 
 const rfs = THREE.MathUtils.randFloatSpread
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32)
 const baubleMaterial = new THREE.MeshStandardMaterial({ color: "white", roughness: 0, envMapIntensity: 1 })
 
-const App = () => (
-  <Canvas shadows gl={{ antialias: false }} dpr={[1, 1.5]} camera={{ position: [0, 0, 20], fov: 35, near: 1, far: 40 }}>
-    <ambientLight intensity={0.5} />
-    <color attach="background" args={["#dfdfdf"]} />
-    <spotLight intensity={1} angle={0.2} penumbra={1} position={[30, 30, 30]} castShadow shadow-mapSize={[512, 512]} />
-    <Physics gravity={[0, 2, 0]} iterations={10}>
-      <Pointer />
-      <Clump />
-    </Physics>
-    <Environment files="/adamsbridge.hdr" />
-    <EffectComposer disableNormalPass multisampling={0}>
-      <N8AO halfRes color="black" aoRadius={2} intensity={1} aoSamples={6} denoiseSamples={4} />
-      <Bloom mipmapBlur levels={7} intensity={1} />
-      <SMAA />
-    </EffectComposer>
-  </Canvas>
-)
+function ThreeContent() {
+  return (
+    <>
+      <ambientLight intensity={0.5} />
+      <color attach="background" args={["#dfdfdf"]} />
+      <spotLight intensity={1} angle={0.2} penumbra={1} position={[30, 30, 30]} castShadow shadow-mapSize={[512, 512]} />
+      <Physics gravity={[0, 2, 0]} iterations={10}>
+        <Pointer />
+        <Clump />
+      </Physics>
+      <Environment files="/adamsbridge.hdr" />
+      <EffectComposer disableNormalPass multisampling={0}>
+        <N8AO halfRes color="black" aoRadius={2} intensity={1} aoSamples={6} denoiseSamples={4} />
+        <Bloom mipmapBlur levels={7} intensity={1} />
+        <SMAA />
+      </EffectComposer>
+    </>
+  )
+}
+
+const App = () => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading 3D Scene...</div>
+  }
+
+  return (
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <Suspense fallback={<div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>}>
+        <Canvas shadows gl={{ antialias: false }} dpr={[1, 1.5]} camera={{ position: [0, 0, 20], fov: 35, near: 1, far: 40 }}>
+          <ThreeContent />
+        </Canvas>
+      </Suspense>
+    </div>
+  )
+}
 
 function Clump({ mat = new THREE.Matrix4(), vec = new THREE.Vector3(), ...props }) {
   const texture = useTexture("/cross.jpg")
