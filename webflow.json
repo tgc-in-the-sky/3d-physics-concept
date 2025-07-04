@@ -8,7 +8,8 @@
     "outputDirectory": ".next",
     "installCommand": "npm install",
     "devCommand": "npm run dev",
-    "port": 3000
+    "port": 3000,
+    "mountPath": "/app"
   },
   "framework": "nextjs",
   "buildCommand": "npm run build",
