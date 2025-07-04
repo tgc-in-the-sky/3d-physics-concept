@@ -9,6 +9,7 @@
   ],
   "main": "src/index.js",
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.0.0-beta.4",
     "@react-three/cannon": "6.5.2",
     "@react-three/drei": "9.83.1",
     "@react-three/fiber": "8.13.0",
@@ -28,7 +29,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
