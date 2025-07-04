@@ -21,15 +21,18 @@
     "three": "^0.157.0"
   },
   "devDependencies": {
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^15.3.5",
+    "prettier": "^3.6.2",
     "typescript": "3.8.3"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit"
   },
   "browserslist": [
     ">0.2%",
